@@ -45,7 +45,20 @@ export const App: React.FC = () => {
       });
   };
 
-  const deleteTodos = (todoId: number) => {
+  const filteredTodos = todoList.filter(todo => {
+    switch (currentFilter) {
+      case FilterType.All:
+        return true;
+
+      case FilterType.Active:
+        return !todo.completed;
+
+      case FilterType.Completed:
+        return todo.completed;
+    }
+  });
+
+  const deleteTodo = (todoId: number) => {
     setLoadingIds(ids => [...ids, todoId]);
     todoSetvices
       .deletePost(todoId)
@@ -66,7 +79,7 @@ export const App: React.FC = () => {
   const addPost = (title: string) => {
     const newTitle = title.trim();
 
-    if (newTitle.trim() === '') {
+    if (!newTitle.trim()) {
       return setErrorMessage(ErrorMessages.emptyTitleError);
     }
 
@@ -105,9 +118,6 @@ export const App: React.FC = () => {
 
   const areAllCompleted =
     todoList.length > 0 && todoList.every(todo => todo.completed);
-  // if (!USER_ID) {
-  //   return <UserWarning />;
-  // }
 
   return (
     <div className="todoapp">
@@ -126,9 +136,9 @@ export const App: React.FC = () => {
         <TodoList
           isLoading={isLoading}
           todoList={todoList}
-          currentFilter={currentFilter}
-          deleteTodos={deleteTodos}
-          deletedIds={loadingIds}
+          filteredTodos={filteredTodos}
+          deleteTodos={deleteTodo}
+          loadingIds={loadingIds}
           tempTodo={tempTodo}
         />
 
@@ -136,8 +146,8 @@ export const App: React.FC = () => {
           <Footer
             todoList={todoList}
             currentFilter={currentFilter}
-            onChange={setCurrentFilter}
-            deleteTodos={deleteTodos}
+            onFilterChange={setCurrentFilter}
+            deleteTodos={deleteTodo}
           />
         )}
       </div>

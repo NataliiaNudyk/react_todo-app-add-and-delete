@@ -18,7 +18,7 @@ export const TodoFilter: React.FC<Props> = ({ currentFilter, onChange }) => {
             selected: currentFilter === type,
           })}
           data-cy={`FilterLink${type}`}
-          onClick={() => onChange(FilterType[type])}
+          onClick={() => onChange(type)}
         >
           {type}
         </a>

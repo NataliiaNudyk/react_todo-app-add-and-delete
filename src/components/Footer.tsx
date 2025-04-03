@@ -7,14 +7,14 @@ type Props = {
   todoList: Todo[];
   deleteTodos: (todoId: number) => void;
   currentFilter: FilterType;
-  onChange: (status: FilterType) => void;
+  onFilterChange: (status: FilterType) => void;
 };
 
 export const Footer: React.FC<Props> = ({
   todoList,
   deleteTodos,
   currentFilter,
-  onChange,
+  onFilterChange: onChange,
 }) => {
   const activeTodosCount = todoList.filter(todo => !todo.completed).length;
   const hasCompletedTodos = todoList.some(todo => todo.completed);
